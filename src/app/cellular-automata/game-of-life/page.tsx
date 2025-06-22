@@ -16,6 +16,9 @@ const GameOfLife = () => {
     setWidth,
     setHeight,
     setCell,
+    isRunning,
+    speed,
+    nextStep,
   } = useGolStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseDown, setIsMouseDown] = useState(false);
@@ -47,6 +50,17 @@ const GameOfLife = () => {
       );
     }
   }, [width, height, setGrid]);
+
+  // Auto-step when running
+  useEffect(() => {
+    if (!isRunning) return;
+
+    const interval = setInterval(() => {
+      nextStep();
+    }, speed);
+
+    return () => clearInterval(interval);
+  }, [isRunning, speed, nextStep]);
 
   return (
     <div className="absolute inset-0 border bg-accent p-4">
