@@ -26,11 +26,11 @@ const items = [
         url: "/cellular-automata/game-of-life",
         icon: Home,
       },
-      {
-        title: "Smooth Life",
-        url: "/cellular-automata/smooth-life",
-        icon: Home,
-      },
+      //   {
+      //     title: "Smooth Life",
+      //     url: "/cellular-automata/smooth-life",
+      //     icon: Home,
+      //   },
     ],
   },
   {
@@ -46,6 +46,11 @@ const items = [
       {
         title: "Quick Sort",
         url: "/sorting-algorithms/quick-sort",
+        icon: Home,
+      },
+      {
+        title: "Merge Sort",
+        url: "/sorting-algorithms/merge-sort",
         icon: Home,
       },
     ],
