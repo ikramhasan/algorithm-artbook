@@ -1,10 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useGolStore } from "@/logic/cellular-automata/gol-store";
 import React, { useEffect, useRef, useState } from "react";
-import { Play, Pause, Undo, ArrowRight } from "lucide-react";
+import GolFooter from "@/components/gol/gol-footer";
 
 const CELL_SIZE = 16; // 1rem = 16px, from w-4 h-4
 
@@ -17,9 +16,6 @@ const GameOfLife = () => {
     setWidth,
     setHeight,
     setCell,
-    resetGrid,
-    isRunning,
-    setIsRunning,
   } = useGolStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseDown, setIsMouseDown] = useState(false);
@@ -86,21 +82,7 @@ const GameOfLife = () => {
           </div>
         ))}
       </div>
-      <div className="absolute bottom-4 right-4 flex gap-2 bg-gray-500 w-fit p-4 rounded-full">
-        <Button className="rounded-full" onClick={setIsRunning}>
-          {isRunning ? (
-            <Pause className="w-4 h-4" />
-          ) : (
-            <Play className="w-4 h-4" />
-          )}
-        </Button>
-        <Button className="rounded-full" disabled={isRunning}>
-          <ArrowRight className="w-4 h-4" />
-        </Button>
-        <Button className="rounded-full" onClick={resetGrid}>
-          <Undo className="w-4 h-4" />
-        </Button>
-      </div>
+      <GolFooter />
     </div>
   );
 };
