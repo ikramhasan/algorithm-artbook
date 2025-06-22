@@ -260,19 +260,4 @@ export const patterns = {
     [5, 2],
     [6, 2],
   ],
-  gliderCollision: [
-    // Two gliders set up to collide
-    // First glider (top-left, moving down-right)
-    [0, 1],
-    [1, 2],
-    [2, 0],
-    [2, 1],
-    [2, 2],
-    // Second glider (bottom-right, moving up-left)
-    [10, 8],
-    [9, 9],
-    [11, 7],
-    [11, 8],
-    [11, 9],
-  ],
 };

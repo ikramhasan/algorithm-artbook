@@ -8,7 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
@@ -86,11 +85,8 @@ const GolFooter = () => {
               <DropdownMenuItem onClick={() => fillPattern("eater")}>
                 Eater
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => fillPattern("gliderCollision")}>
-                Glider Cannon
-              </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuLabel>Logic Gates</DropdownMenuLabel>
             <DropdownMenuGroup>
               <DropdownMenuItem disabled onClick={() => fillPattern("andGate")}>
@@ -127,7 +123,7 @@ const GolFooter = () => {
                 XNOR Gate
                 <DropdownMenuShortcut>In progress</DropdownMenuShortcut>
               </DropdownMenuItem>
-            </DropdownMenuGroup>
+            </DropdownMenuGroup> */}
           </DropdownMenuContent>
         </DropdownMenu>
 
