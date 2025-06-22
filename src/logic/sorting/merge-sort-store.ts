@@ -258,7 +258,6 @@ export const useMergeSortStore = create<MergeSortStore>()((set, get) => ({
       array,
       stack,
       currentLeft,
-      currentRight,
       currentMid,
       leftArray,
       rightArray,
