@@ -74,6 +74,21 @@ const GolFooter = () => {
               <DropdownMenuItem onClick={() => fillPattern("beacon")}>
                 Beacon
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => fillPattern("acorn")}>
+                Acorn
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => fillPattern("blinker")}>
+                Blinker
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => fillPattern("gliderGun")}>
+                Glider Gun
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => fillPattern("eater")}>
+                Eater
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => fillPattern("gliderCollision")}>
+                Glider Cannon
+              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Logic Gates</DropdownMenuLabel>
@@ -94,7 +109,10 @@ const GolFooter = () => {
                 NOT Gate
                 <DropdownMenuShortcut>In progress</DropdownMenuShortcut>
               </DropdownMenuItem>
-              <DropdownMenuItem disabled onClick={() => fillPattern("nandGate")}>
+              <DropdownMenuItem
+                disabled
+                onClick={() => fillPattern("nandGate")}
+              >
                 NAND Gate
                 <DropdownMenuShortcut>In progress</DropdownMenuShortcut>
               </DropdownMenuItem>
@@ -102,7 +120,10 @@ const GolFooter = () => {
                 NOR Gate
                 <DropdownMenuShortcut>In progress</DropdownMenuShortcut>
               </DropdownMenuItem>
-              <DropdownMenuItem disabled onClick={() => fillPattern("xnorGate")}>
+              <DropdownMenuItem
+                disabled
+                onClick={() => fillPattern("xnorGate")}
+              >
                 XNOR Gate
                 <DropdownMenuShortcut>In progress</DropdownMenuShortcut>
               </DropdownMenuItem>
