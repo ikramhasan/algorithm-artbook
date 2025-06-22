@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
@@ -16,9 +17,6 @@ import { useGolStore } from "@/logic/cellular-automata/gol-store";
 
 const GolFooter = () => {
   const {
-    width,
-    height,
-    setGrid,
     setIsRunning,
     isRunning,
     resetGrid,
@@ -26,6 +24,7 @@ const GolFooter = () => {
     speed,
     setSpeed,
     generation,
+    fillPattern,
   } = useGolStore();
 
   const speedOptions = [
@@ -59,26 +58,54 @@ const GolFooter = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="start">
             <DropdownMenuGroup>
-              <DropdownMenuItem
-                onClick={() => {
-                  setGrid(
-                    Array.from({ length: height }, () =>
-                      Array.from({ length: width }, () =>
-                        Math.random() > 0.5 ? 1 : 0
-                      )
-                    )
-                  );
-                }}
-              >
+              <DropdownMenuItem onClick={() => fillPattern("random")}>
                 Random
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Patterns</DropdownMenuLabel>
             <DropdownMenuGroup>
-              <DropdownMenuItem>Glider</DropdownMenuItem>
-              <DropdownMenuItem>Pulsar</DropdownMenuItem>
-              <DropdownMenuItem>Beacon</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => fillPattern("glider")}>
+                Glider
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => fillPattern("pulsar")}>
+                Pulsar
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => fillPattern("beacon")}>
+                Beacon
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Logic Gates</DropdownMenuLabel>
+            <DropdownMenuGroup>
+              <DropdownMenuItem disabled onClick={() => fillPattern("andGate")}>
+                AND Gate
+                <DropdownMenuShortcut>In progress</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled onClick={() => fillPattern("orGate")}>
+                OR Gate
+                <DropdownMenuShortcut>In progress</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled onClick={() => fillPattern("xorGate")}>
+                XOR Gate
+                <DropdownMenuShortcut>In progress</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled onClick={() => fillPattern("notGate")}>
+                NOT Gate
+                <DropdownMenuShortcut>In progress</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled onClick={() => fillPattern("nandGate")}>
+                NAND Gate
+                <DropdownMenuShortcut>In progress</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled onClick={() => fillPattern("norGate")}>
+                NOR Gate
+                <DropdownMenuShortcut>In progress</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled onClick={() => fillPattern("xnorGate")}>
+                XNOR Gate
+                <DropdownMenuShortcut>In progress</DropdownMenuShortcut>
+              </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>

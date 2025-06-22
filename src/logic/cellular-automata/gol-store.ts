@@ -16,6 +16,7 @@ type GolStore = {
   setSpeed: (speed: number) => void;
   nextStep: () => void;
   countNeighbors: (x: number, y: number, grid: number[][]) => number;
+  fillPattern: (patternName: string) => void;
 };
 
 const countNeighbors = (x: number, y: number, grid: number[][]): number => {
@@ -40,6 +41,236 @@ const countNeighbors = (x: number, y: number, grid: number[][]): number => {
   return count;
 };
 
+// Pattern definitions - relative coordinates from top-left
+const patterns = {
+  glider: [
+    [0, 1],
+    [1, 2],
+    [2, 0],
+    [2, 1],
+    [2, 2],
+  ],
+  pulsar: [
+    // Top part
+    [2, 0],
+    [3, 0],
+    [4, 0],
+    [8, 0],
+    [9, 0],
+    [10, 0],
+    [0, 2],
+    [5, 2],
+    [7, 2],
+    [12, 2],
+    [0, 3],
+    [5, 3],
+    [7, 3],
+    [12, 3],
+    [0, 4],
+    [5, 4],
+    [7, 4],
+    [12, 4],
+    [2, 5],
+    [3, 5],
+    [4, 5],
+    [8, 5],
+    [9, 5],
+    [10, 5],
+    // Middle gap
+    [2, 7],
+    [3, 7],
+    [4, 7],
+    [8, 7],
+    [9, 7],
+    [10, 7],
+    [0, 8],
+    [5, 8],
+    [7, 8],
+    [12, 8],
+    [0, 9],
+    [5, 9],
+    [7, 9],
+    [12, 9],
+    [0, 10],
+    [5, 10],
+    [7, 10],
+    [12, 10],
+    // Bottom part
+    [2, 12],
+    [3, 12],
+    [4, 12],
+    [8, 12],
+    [9, 12],
+    [10, 12],
+  ],
+  beacon: [
+    [0, 0],
+    [1, 0],
+    [0, 1],
+    [3, 2],
+    [2, 3],
+    [3, 3],
+  ],
+  // Logic gates as patterns
+  andGate: [
+    // Input A
+    [0, 2],
+    // Input B
+    [0, 4],
+    // Gate logic (simplified representation)
+    [2, 2],
+    [3, 2],
+    [2, 3],
+    [3, 3],
+    [2, 4],
+    [3, 4],
+    // Output line
+    [5, 3],
+  ],
+  orGate: [
+    // Input A
+    [0, 2],
+    // Input B
+    [0, 4],
+    // Gate logic
+    [2, 2],
+    [3, 2],
+    [4, 2],
+    [2, 3],
+    [4, 3],
+    [2, 4],
+    [3, 4],
+    [4, 4],
+    // Output
+    [6, 3],
+  ],
+  xorGate: [
+    // Input A
+    [0, 1],
+    // Input B
+    [0, 5],
+    // Gate representation
+    [2, 1],
+    [3, 2],
+    [2, 3],
+    [3, 3],
+    [4, 3],
+    [2, 4],
+    [3, 4],
+    [2, 5],
+    // Output
+    [6, 3],
+  ],
+  notGate: [
+    // Input
+    [0, 2],
+    // Gate
+    [2, 1],
+    [3, 1],
+    [2, 2],
+    [4, 2],
+    [2, 3],
+    [3, 3],
+    // Output (inverted)
+    [6, 2],
+  ],
+  nandGate: [
+    // Combination of AND + NOT
+    [0, 2],
+    [0, 4], // Inputs
+    [2, 2],
+    [3, 2],
+    [2, 3],
+    [3, 3],
+    [2, 4],
+    [3, 4], // AND part
+    [5, 2],
+    [6, 2],
+    [5, 3],
+    [5, 4], // NOT part
+    [8, 3], // Output
+  ],
+  norGate: [
+    // Combination of OR + NOT
+    [0, 2],
+    [0, 4], // Inputs
+    [2, 2],
+    [3, 2],
+    [4, 2],
+    [2, 3],
+    [4, 3],
+    [2, 4],
+    [3, 4],
+    [4, 4], // OR part
+    [6, 2],
+    [7, 2],
+    [6, 3],
+    [6, 4], // NOT part
+    [9, 3], // Output
+  ],
+  xnorGate: [
+    // Combination of XOR + NOT
+    [0, 1],
+    [0, 5], // Inputs
+    [2, 1],
+    [3, 2],
+    [2, 3],
+    [3, 3],
+    [4, 3],
+    [2, 4],
+    [3, 4],
+    [2, 5], // XOR part
+    [6, 2],
+    [7, 2],
+    [6, 3],
+    [6, 4], // NOT part
+    [9, 3], // Output
+  ],
+};
+
+const generatePattern = (
+  patternName: string,
+  width: number,
+  height: number
+): number[][] => {
+  const grid = Array.from({ length: height }, () =>
+    Array.from({ length: width }, () => 0)
+  );
+
+  const pattern = patterns[patternName as keyof typeof patterns];
+  if (!pattern) return grid;
+
+  // Calculate center position
+  const centerX = Math.floor(width / 2);
+  const centerY = Math.floor(height / 2);
+
+  // Get pattern bounds
+  const minX = Math.min(...pattern.map((p) => p[0]));
+  const maxX = Math.max(...pattern.map((p) => p[0]));
+  const minY = Math.min(...pattern.map((p) => p[1]));
+  const maxY = Math.max(...pattern.map((p) => p[1]));
+
+  const patternWidth = maxX - minX;
+  const patternHeight = maxY - minY;
+
+  // Offset to center the pattern
+  const offsetX = centerX - Math.floor(patternWidth / 2);
+  const offsetY = centerY - Math.floor(patternHeight / 2);
+
+  // Place pattern cells
+  pattern.forEach(([x, y]) => {
+    const newX = x + offsetX;
+    const newY = y + offsetY;
+
+    // Check bounds
+    if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+      grid[newY][newX] = 1;
+    }
+  });
+
+  return grid;
+};
+
 export const useGolStore = create<GolStore>()((set, get) => ({
   width: 100,
   height: 100,
@@ -53,6 +284,7 @@ export const useGolStore = create<GolStore>()((set, get) => ({
         Array.from({ length: 100 }, () => 0)
       ),
       generation: 0,
+      isRunning: false,
     }),
   setGrid: (grid) => set({ grid }),
   setWidth: (width) => set({ width }),
@@ -68,6 +300,20 @@ export const useGolStore = create<GolStore>()((set, get) => ({
       ),
     })),
   countNeighbors: (x, y, grid) => countNeighbors(x, y, grid),
+  fillPattern: (patternName: string) => {
+    const state = get();
+    const { width, height } = state;
+
+    if (patternName === "random") {
+      const randomGrid = Array.from({ length: height }, () =>
+        Array.from({ length: width }, () => (Math.random() > 0.5 ? 1 : 0))
+      );
+      set({ grid: randomGrid, generation: 0 });
+    } else {
+      const patternGrid = generatePattern(patternName, width, height);
+      set({ grid: patternGrid, generation: 0 });
+    }
+  },
   nextStep: () => {
     const state = get();
     const { grid, width, height } = state;
