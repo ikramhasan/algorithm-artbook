@@ -45,7 +45,7 @@ const items = [
       },
       {
         title: "Quick Sort",
-        url: "#",
+        url: "/sorting-algorithms/quick-sort",
         icon: Home,
       },
     ],
