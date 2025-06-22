@@ -1,14 +1,15 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useGolStore } from "@/logic/cellular-automata/gol-store";
 import React, { useEffect, useRef, useState } from "react";
+import { Play, Pause, Undo, ArrowRight } from "lucide-react";
 
-// const CELL_SIZE = 16; // 1rem = 16px, from w-4 h-4
+const CELL_SIZE = 16; // 1rem = 16px, from w-4 h-4
 
 const GameOfLife = () => {
   const {
-    cellSize,
     width,
     height,
     grid,
@@ -16,6 +17,9 @@ const GameOfLife = () => {
     setWidth,
     setHeight,
     setCell,
+    resetGrid,
+    isRunning,
+    setIsRunning,
   } = useGolStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseDown, setIsMouseDown] = useState(false);
@@ -27,8 +31,8 @@ const GameOfLife = () => {
     const resizeObserver = new ResizeObserver(() => {
       const { width: containerWidth, height: containerHeight } =
         container.getBoundingClientRect();
-      const newWidth = Math.floor(containerWidth / cellSize);
-      const newHeight = Math.floor(containerHeight / cellSize);
+      const newWidth = Math.floor(containerWidth / CELL_SIZE);
+      const newHeight = Math.floor(containerHeight / CELL_SIZE);
       setWidth(newWidth);
       setHeight(newHeight);
     });
@@ -36,7 +40,7 @@ const GameOfLife = () => {
     resizeObserver.observe(container);
 
     return () => resizeObserver.disconnect();
-  }, [cellSize, setHeight, setWidth]);
+  }, [setHeight, setWidth]);
 
   useEffect(() => {
     if (width > 0 && height > 0) {
@@ -81,6 +85,21 @@ const GameOfLife = () => {
             ))}
           </div>
         ))}
+      </div>
+      <div className="absolute bottom-4 right-4 flex gap-2 bg-gray-500 w-fit p-4 rounded-full">
+        <Button className="rounded-full" onClick={setIsRunning}>
+          {isRunning ? (
+            <Pause className="w-4 h-4" />
+          ) : (
+            <Play className="w-4 h-4" />
+          )}
+        </Button>
+        <Button className="rounded-full" disabled={isRunning}>
+          <ArrowRight className="w-4 h-4" />
+        </Button>
+        <Button className="rounded-full" onClick={resetGrid}>
+          <Undo className="w-4 h-4" />
+        </Button>
       </div>
     </div>
   );
