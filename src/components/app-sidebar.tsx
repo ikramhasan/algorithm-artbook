@@ -35,12 +35,12 @@ const items = [
   },
   {
     title: "Sorting Algorithms",
-    url: "#",
+    url: "/sorting-algorithms",
     icon: Inbox,
     subItems: [
       {
         title: "Bubble Sort",
-        url: "#",
+        url: "/sorting-algorithms/bubble-sort",
         icon: Home,
       },
       {
