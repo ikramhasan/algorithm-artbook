@@ -45,7 +45,7 @@ const GameOfLife = () => {
     if (width > 0 && height > 0) {
       setGrid(
         Array.from({ length: height }, () =>
-          Array.from({ length: width }, () => (Math.random() > 0.5 ? 0 : 0))
+          Array.from({ length: width }, () => (Math.random() > 0.5 ? 1 : 0))
         )
       );
     }
